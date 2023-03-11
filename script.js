@@ -1,5 +1,20 @@
 const dino = document.getElementById("dino");
 const cactus = document.getElementById("cactus");
+const gameOverText = document.getElementById("game-over");
+const cactusAnimation = cactus.getAnimations()[0];
+const scoreText = document.getElementById("score");
+
+cactusAnimation.pause();
+
+let gameRunning = false;
+let gameOver = false;
+let score = 0;
+
+function resetAnimation() {
+  cactusAnimation.reverse();
+  cactusAnimation.finish();
+  cactusAnimation.reverse();
+}
 
 function jump() {
   if (dino.classList != "jump") {
@@ -7,13 +22,15 @@ function jump() {
 
     setTimeout(function () {
       dino.classList.remove("jump");
-    }, 300);
+    }, 400);
   }
 }
 
-let isAlive = setInterval(function () {
+const isAlive = setInterval(function () {
   // get current dino Y position
-  let dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("top"));
+  let dinoBottom = parseInt(
+    window.getComputedStyle(dino).getPropertyValue("bottom")
+  );
 
   // get current cactus X position
   let cactusLeft = parseInt(
@@ -21,12 +38,32 @@ let isAlive = setInterval(function () {
   );
 
   // detect collision
-  if (cactusLeft < 50 && cactusLeft > 0 && dinoTop >= 140) {
+  if (cactusLeft < 50 && cactusLeft > 0 && dinoBottom < 140) {
     // collision
-    // console.log("Game Over!");
+    cactusAnimation.pause();
+    gameOverText.classList.remove("game-over-hidden");
+    gameRunning = false;
+    gameOver = true;
   }
+
+  if (gameRunning) {
+    score += 10;
+  }
+
+  scoreText.textContent = score;
 }, 10);
 
 document.addEventListener("keydown", function (event) {
-  jump();
+  if (gameRunning) {
+    jump();
+  } else if (gameOver) {
+    gameRunning = true;
+    resetAnimation();
+    gameOver = false;
+    score = 0;
+    gameOverText.classList.add("game-over-hidden");
+  } else {
+    gameRunning = true;
+    cactusAnimation.play();
+  }
 });
