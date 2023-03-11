@@ -1,6 +1,6 @@
 const dinoGame = new DinoGame();
 
-const isAlive = setInterval(function () {
+function loop() {
   // detect collision
   if (dinoGame.didDinoHitCactus()) {
     // collision
@@ -12,9 +12,9 @@ const isAlive = setInterval(function () {
   }
 
   dinoGame.updateScoreText();
-}, 10);
+}
 
-document.addEventListener("keydown", function (event) {
+function keypressHandler() {
   if (dinoGame.gameRunning()) {
     dinoGame.jump();
   } else if (dinoGame.gameOver()) {
@@ -23,4 +23,7 @@ document.addEventListener("keydown", function (event) {
   } else {
     dinoGame.startGame();
   }
-});
+}
+
+setInterval(loop, 10);
+document.addEventListener("keydown", keypressHandler);
