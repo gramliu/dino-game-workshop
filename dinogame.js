@@ -67,13 +67,14 @@ class DinoGame {
 
   setScore(value) {
     this.score = value;
+    this.#updateScoreText();
   }
 
   getScore() {
     return this.score;
   }
 
-  updateScoreText() {
+  #updateScoreText() {
     scoreText.textContent = this.getScore();
   }
 }

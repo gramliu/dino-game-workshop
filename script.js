@@ -10,8 +10,6 @@ function loop() {
   if (dinoGame.gameRunning()) {
     dinoGame.setScore(dinoGame.getScore() + 10);
   }
-
-  dinoGame.updateScoreText();
 }
 
 function keypressHandler() {
